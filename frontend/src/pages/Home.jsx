@@ -1,12 +1,19 @@
 import { useState } from "react";
 
+import {
+  FiZap,
+  FiArrowRight,
+  FiEdit3,
+} from "react-icons/fi";
+
 import Navbar from "../components/Navbar";
 import ServiceCard from "../components/ServiceCard";
 import ConsultationForm from "../components/ConsultationForm";
 import Footer from "../components/Footer";
 
 function Home() {
-  const [showConsultation, setShowConsultation] = useState(false);
+  const [showConsultation, setShowConsultation] =
+    useState(false);
 
   const services = [
     {
@@ -49,25 +56,46 @@ function Home() {
 
   return (
     <div className="home-page">
+
       {/* ================= NAVBAR ================= */}
+
       <Navbar />
 
+
       {/* ================= HERO SECTION ================= */}
+
       <main className="hero-section">
+
         <div className="hero-content">
+
+          {/* ================= BADGE ================= */}
+
           <div className="hero-badge">
-            🚀 Building Digital Experiences
+            <FiZap />
+
+            <span>
+              Building Digital Experiences
+            </span>
           </div>
+
+
+          {/* ================= HEADING ================= */}
 
           <h1>
             AI Solutions.
             <br />
 
-            <span>Web Solutions.</span>
+            <span>
+              Web Solutions.
+            </span>
+
             <br />
 
             Built for Growth.
           </h1>
+
+
+          {/* ================= DESCRIPTION ================= */}
 
           <p>
             We build powerful websites, custom software and
@@ -76,40 +104,82 @@ function Home() {
             products.
           </p>
 
+
+          {/* ================= HERO BUTTONS ================= */}
+
           <div className="hero-buttons">
+
             <button
               className="primary-btn"
-              onClick={() => setShowConsultation(true)}
+              type="button"
+              onClick={() =>
+                setShowConsultation(true)
+              }
             >
-              Get Started
+              <span>
+                Get Started
+              </span>
+
+              <FiArrowRight />
             </button>
+
 
             <button
               className="secondary-btn"
-              onClick={() => setShowConsultation(true)}
+              type="button"
+              onClick={() =>
+                setShowConsultation(true)
+              }
             >
-              Give a Task
+              <span>
+                Give a Task
+              </span>
+
+              <FiEdit3 />
             </button>
+
           </div>
+
+
+          {/* ================= TRUST POINTS ================= */}
 
           <div className="hero-trust">
-            <span>✓ Custom Solutions</span>
-            <span>✓ Fast Development</span>
-            <span>✓ Modern Technology</span>
+
+            <span>
+              ✓ Custom Solutions
+            </span>
+
+            <span>
+              ✓ Fast Development
+            </span>
+
+            <span>
+              ✓ Modern Technology
+            </span>
+
           </div>
+
         </div>
+
       </main>
 
+
       {/* ================= SERVICES SECTION ================= */}
+
       <section className="services-section">
+
         <div className="section-heading">
+
           <span className="section-label">
             WHAT WE OFFER
           </span>
 
           <h2>
             Technology that helps
-            <span> your business grow.</span>
+
+            <span>
+              {" "}your business grow.
+            </span>
           </h2>
 
           <p>
@@ -118,30 +188,52 @@ function Home() {
             practical business thinking to build digital
             products that make an impact.
           </p>
+
         </div>
 
-        {/* Service Cards */}
+
+        {/* ================= SERVICE CARDS ================= */}
+
         <div className="services-grid">
-          {services.map((service, index) => (
-            <ServiceCard
-              key={index}
-              icon={service.icon}
-              title={service.title}
-              description={service.description}
-            />
-          ))}
+
+          {services.map(
+            (
+              service,
+              index
+            ) => (
+              <ServiceCard
+                key={index}
+                icon={service.icon}
+                title={service.title}
+                description={
+                  service.description
+                }
+              />
+            )
+          )}
+
         </div>
+
       </section>
 
+
       {/* ================= CONSULTATION MODAL ================= */}
+
       {showConsultation && (
         <ConsultationForm
-          onClose={() => setShowConsultation(false)}
+          onClose={() =>
+            setShowConsultation(
+              false
+            )
+          }
         />
       )}
 
+
       {/* ================= FOOTER ================= */}
+
       <Footer />
+
     </div>
   );
 }

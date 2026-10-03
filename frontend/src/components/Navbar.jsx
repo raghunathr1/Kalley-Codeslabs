@@ -5,6 +5,8 @@ import {
   FiMenu,
   FiX,
   FiArrowRight,
+  FiHome,
+  FiBriefcase,
 } from "react-icons/fi";
 
 import "./Navbar.css";
@@ -35,6 +37,7 @@ function Navbar() {
           />
 
           <div className="logo-text">
+
             <span className="logo-main">
               KALLEY
             </span>
@@ -42,7 +45,9 @@ function Navbar() {
             <span className="logo-sub">
               CODELABS
             </span>
+
           </div>
+
         </Link>
 
 
@@ -53,23 +58,36 @@ function Navbar() {
           <Link
             to="/"
             onClick={closeMenu}
+            className="nav-link-with-icon"
           >
-            Home
+            <FiHome />
+            <span>
+              Home
+            </span>
           </Link>
+
 
           <Link
             to="/student"
             onClick={closeMenu}
+            className="nav-link-with-icon"
           >
-            Student / Job Vacancy
+            <FiBriefcase />
+            <span>
+              Student / Job Vacancy
+            </span>
           </Link>
+
 
           <Link
             to="/student"
             className="nav-start-btn"
             onClick={closeMenu}
           >
-            Let's Start
+            <span>
+              Let's Start
+            </span>
+
             <FiArrowRight />
           </Link>
 
@@ -115,23 +133,36 @@ function Navbar() {
         <Link
           to="/"
           onClick={closeMenu}
+          className="mobile-nav-link"
         >
-          Home
+          <span>
+            <FiHome />
+            Home
+          </span>
         </Link>
+
 
         <Link
           to="/student"
           onClick={closeMenu}
+          className="mobile-nav-link"
         >
-          Student / Job Vacancy
+          <span>
+            <FiBriefcase />
+            Student / Job Vacancy
+          </span>
         </Link>
+
 
         <Link
           to="/student"
           className="mobile-start-btn"
           onClick={closeMenu}
         >
-          Let's Start
+          <span>
+            Let's Start
+          </span>
+
           <FiArrowRight />
         </Link>
 

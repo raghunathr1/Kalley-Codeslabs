@@ -889,3 +889,65 @@ textarea {
   }
 
 }
+/* ========================================
+   HERO ICONS
+======================================== */
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-badge svg {
+  flex-shrink: 0;
+
+  font-size: 15px;
+
+  color: #6d59e7;
+}
+
+
+.primary-btn,
+.secondary-btn {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+}
+
+
+.primary-btn svg,
+.secondary-btn svg {
+  flex-shrink: 0;
+
+  font-size: 16px;
+
+  transition:
+    transform 0.25s ease;
+}
+
+
+.primary-btn:hover svg {
+  transform:
+    translateX(3px);
+}
+
+
+.secondary-btn:hover svg {
+  transform:
+    translateY(-1px)
+    rotate(-4deg);
+}
+
+
+@media (max-width: 768px) {
+
+  .primary-btn,
+  .secondary-btn {
+    gap: 8px;
+  }
+
+}

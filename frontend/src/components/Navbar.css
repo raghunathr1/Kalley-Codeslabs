@@ -24,6 +24,10 @@
 }
 
 
+/* ========================================
+   NAV CONTAINER
+======================================== */
+
 .nav-container {
   width: min(
     1180px,
@@ -35,19 +39,22 @@
   margin: 0 auto;
 
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
   gap: 30px;
 }
 
 
-/* =========================
+/* ========================================
    LOGO
-   ========================= */
+======================================== */
 
 .logo {
   display: inline-flex;
+
   align-items: center;
 
   gap: 12px;
@@ -60,6 +67,7 @@
 
 .logo-image {
   width: 54px;
+
   height: 54px;
 
   display: block;
@@ -112,8 +120,7 @@
 
   font-weight: 900;
 
-  letter-spacing:
-    -0.6px;
+  letter-spacing: -0.6px;
 }
 
 
@@ -124,26 +131,31 @@
 
   font-weight: 800;
 
-  letter-spacing:
-    4px;
+  letter-spacing: 4px;
 }
 
 
-/* =========================
+/* ========================================
    DESKTOP NAV
-   ========================= */
+======================================== */
 
 .nav-links {
   display: flex;
 
   align-items: center;
 
-  gap: 34px;
+  gap: 30px;
 }
 
 
-.nav-links > a:not(.nav-start-btn) {
+.nav-link-with-icon {
   position: relative;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
 
   text-decoration: none;
 
@@ -158,7 +170,20 @@
 }
 
 
-.nav-links > a:not(.nav-start-btn)::after {
+.nav-link-with-icon svg {
+  flex-shrink: 0;
+
+  font-size: 16px;
+
+  color: #6e5be3;
+
+  transition:
+    transform 0.25s ease,
+    color 0.25s ease;
+}
+
+
+.nav-link-with-icon::after {
   content: "";
 
   position: absolute;
@@ -185,31 +210,41 @@
 }
 
 
-.nav-links > a:not(.nav-start-btn):hover {
+.nav-link-with-icon:hover {
   color: #7053e5;
 }
 
 
-.nav-links > a:not(.nav-start-btn):hover::after {
+.nav-link-with-icon:hover::after {
   width: 100%;
 }
 
 
-/* =========================
-   START BUTTON
-   ========================= */
+.nav-link-with-icon:hover svg {
+  transform:
+    translateY(-1px);
+
+  color: #7053e5;
+}
+
+
+/* ========================================
+   LET'S START BUTTON
+======================================== */
 
 .nav-start-btn {
   display: inline-flex;
 
   align-items: center;
+
   justify-content: center;
 
   gap: 9px;
 
   min-height: 44px;
 
-  padding: 0 21px;
+  padding:
+    0 21px;
 
   border-radius: 14px;
 
@@ -252,6 +287,8 @@
 
 
 .nav-start-btn svg {
+  flex-shrink: 0;
+
   font-size: 17px;
 
   transition:
@@ -265,14 +302,15 @@
 }
 
 
-/* =========================
-   MOBILE BUTTON
-   ========================= */
+/* ========================================
+   MOBILE MENU BUTTON
+======================================== */
 
 .menu-btn {
   display: none;
 
   width: 44px;
+
   height: 44px;
 
   border:
@@ -285,6 +323,7 @@
   color: #27324a;
 
   align-items: center;
+
   justify-content: center;
 
   cursor: pointer;
@@ -307,27 +346,46 @@
 }
 
 
+/* ========================================
+   MOBILE MENU
+======================================== */
+
 .mobile-menu {
   display: none;
 }
 
 
-/* =========================
-   RESPONSIVE
-   ========================= */
+/* ========================================
+   TABLET
+======================================== */
 
 @media (max-width: 900px) {
 
   .nav-links {
-    gap: 22px;
+    gap: 20px;
   }
 
-  .nav-links > a:not(.nav-start-btn) {
+
+  .nav-link-with-icon span {
     font-size: 13px;
+  }
+
+
+  .nav-link-with-icon {
+    gap: 6px;
+  }
+
+
+  .nav-link-with-icon svg {
+    font-size: 15px;
   }
 
 }
 
+
+/* ========================================
+   MOBILE
+======================================== */
 
 @media (max-width: 760px) {
 
@@ -335,7 +393,7 @@
     min-height: 72px;
 
     width: min(
-      100% - 28px,
+      calc(100% - 28px),
       680px
     );
   }
@@ -374,7 +432,12 @@
     border-radius: 18px;
 
     background:
-      rgba(255, 255, 255, 0.97);
+      rgba(
+        255,
+        255,
+        255,
+        0.97
+      );
 
     box-shadow:
       0 18px 40px
@@ -396,7 +459,7 @@
       visibility 0.25s ease,
       transform 0.25s ease,
       max-height 0.25s ease;
-}
+  }
 
 
   .mobile-menu.show {
@@ -411,11 +474,10 @@
   }
 
 
-  .mobile-menu > a {
+  .mobile-nav-link {
     display: flex;
 
     align-items: center;
-    justify-content: space-between;
 
     min-height: 46px;
 
@@ -431,20 +493,63 @@
     font-size: 14px;
 
     font-weight: 600;
+
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
   }
 
 
-  .mobile-menu > a:hover {
+  .mobile-nav-link span {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+  }
+
+
+  .mobile-nav-link svg {
+    flex-shrink: 0;
+
+    color: #6e5be3;
+
+    font-size: 17px;
+
+    transition:
+      transform 0.2s ease;
+  }
+
+
+  .mobile-nav-link:hover {
     background: #f5f2ff;
 
     color: #7358df;
   }
 
 
+  .mobile-nav-link:hover svg {
+    transform:
+      translateY(-1px);
+  }
+
+
   .mobile-start-btn {
     margin-top: 4px;
 
+    min-height: 46px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
     color: #ffffff !important;
+
+    border-radius: 12px;
 
     background:
       linear-gradient(
@@ -453,9 +558,20 @@
         #5b86ff
       );
 
-    justify-content: center !important;
+    text-decoration: none;
 
-    gap: 8px;
+    font-size: 14px;
+
+    font-weight: 700;
+
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+
+  .mobile-start-btn svg {
+    font-size: 17px;
   }
 
 
@@ -467,11 +583,22 @@
         135deg,
         #6d4cf2,
         #4f7cf5
-      ) !important;
+      );
+
+    transform:
+      translateY(-1px);
+
+    box-shadow:
+      0 8px 18px
+      rgba(94, 77, 220, 0.20);
   }
 
 }
 
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
 
 @media (max-width: 480px) {
 
@@ -479,20 +606,37 @@
     min-height: 68px;
   }
 
+
+  .logo {
+    gap: 9px;
+  }
+
+
   .logo-image {
     width: 46px;
+
     height: 46px;
 
     border-radius: 13px;
   }
 
+
   .logo-main {
     font-size: 17px;
   }
 
+
   .logo-sub {
     font-size: 8px;
+
     letter-spacing: 3px;
+  }
+
+
+  .menu-btn {
+    width: 42px;
+
+    height: 42px;
   }
 
 }
