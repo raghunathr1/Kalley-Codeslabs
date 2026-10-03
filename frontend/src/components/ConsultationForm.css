@@ -1,0 +1,322 @@
+/* ========================================
+   CONSULTATION OVERLAY
+======================================== */
+
+.consultation-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 2000;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(30, 35, 55, 0.35);
+
+  backdrop-filter: blur(8px);
+
+  animation: consultationFade 0.25s ease;
+}
+
+
+@keyframes consultationFade {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+
+}
+
+
+/* ========================================
+   MODAL
+======================================== */
+
+.consultation-modal {
+  width: 100%;
+
+  max-width: 720px;
+
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  position: relative;
+
+  padding: 42px;
+
+  border-radius: 26px;
+
+  background: #ffffff;
+
+  border: 1px solid #e7e8f2;
+
+  box-shadow:
+    0 30px 80px rgba(44, 49, 85, 0.2);
+
+  animation: consultationSlide 0.3s ease;
+}
+
+
+@keyframes consultationSlide {
+
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+}
+
+
+/* Close */
+
+.close-consultation {
+  position: absolute;
+
+  top: 20px;
+  right: 20px;
+
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #f3f4fa;
+
+  color: #555b70;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  transition: 0.25s;
+}
+
+
+.close-consultation:hover {
+  background: #eceaff;
+
+  color: #6658e8;
+
+  transform: rotate(90deg);
+}
+
+
+/* ========================================
+   HEADER
+======================================== */
+
+.consultation-header {
+  margin-bottom: 30px;
+}
+
+.consultation-label {
+  color: #6658e8;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+}
+
+.consultation-header h2 {
+  margin: 10px 0 12px;
+
+  color: #171a2b;
+
+  font-size: 38px;
+
+  line-height: 1.15;
+
+  letter-spacing: -1px;
+}
+
+.consultation-header h2 span {
+  color: #7167e8;
+}
+
+.consultation-header p {
+  max-width: 600px;
+
+  color: #70768a;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+
+/* ========================================
+   FORM
+======================================== */
+
+.form-row {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+
+  flex-direction: column;
+
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+
+  color: #34384a;
+
+  font-size: 13px;
+
+  font-weight: 650;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+
+  padding: 14px 15px;
+
+  border: 1px solid #dfe1eb;
+
+  border-radius: 12px;
+
+  outline: none;
+
+  background: #fafbfe;
+
+  color: #202337;
+
+  font-size: 14px;
+
+  transition: 0.25s;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #a2a7b6;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #8178ee;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 4px rgba(113, 103, 232, 0.08);
+}
+
+.form-group textarea {
+  resize: vertical;
+
+  min-height: 130px;
+}
+
+
+/* ========================================
+   SUBMIT BUTTON
+======================================== */
+
+.consultation-submit {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  padding: 15px;
+
+  border: none;
+
+  border-radius: 13px;
+
+  background: linear-gradient(
+    135deg,
+    #7167e8,
+    #8b7cf6
+  );
+
+  color: white;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 25px rgba(113, 103, 232, 0.2);
+
+  transition: 0.25s;
+}
+
+.consultation-submit:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 15px 30px rgba(113, 103, 232, 0.3);
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 600px) {
+
+  .consultation-overlay {
+    padding: 12px;
+  }
+
+  .consultation-modal {
+    padding: 28px 20px;
+
+    border-radius: 20px;
+
+    max-height: 94vh;
+  }
+
+  .consultation-header h2 {
+    font-size: 30px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+
+    gap: 0;
+  }
+
+}

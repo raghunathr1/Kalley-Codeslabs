@@ -1,0 +1,596 @@
+.register-page {
+  min-height: 100vh;
+  padding: 120px 25px 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(113, 103, 232, 0.12),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(139, 124, 246, 0.10),
+      transparent 30%
+    ),
+    #f8f9ff;
+}
+
+/* ================= CARD ================= */
+
+.register-card {
+  width: 100%;
+  max-width: 560px;
+
+  padding: 50px 55px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e6ef;
+  border-radius: 28px;
+
+  box-shadow:
+    0 25px 70px rgba(40, 45, 75, 0.10);
+
+  color: #202338;
+}
+
+/* ================= ICON ================= */
+
+.register-icon {
+  width: 58px;
+  height: 58px;
+
+  margin: 0 auto 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: #eeeaff;
+  color: #7167e8;
+
+  font-size: 25px;
+
+  box-shadow:
+    0 10px 25px
+    rgba(113, 103, 232, 0.12);
+}
+
+/* ================= HEADER ================= */
+
+.register-header {
+  text-align: center;
+
+  margin-bottom: 32px;
+}
+
+.register-label {
+  display: inline-block;
+
+  margin-bottom: 12px;
+
+  color: #7167e8;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 2.5px;
+}
+
+.register-header h1 {
+  margin: 0 0 12px;
+
+  color: #1b1e31;
+
+  font-size: clamp(
+    31px,
+    5vw,
+    42px
+  );
+
+  line-height: 1.12;
+
+  letter-spacing: -1.4px;
+}
+
+.register-header h1 span {
+  color: #7167e8;
+}
+
+.register-header p {
+  max-width: 430px;
+
+  margin: 0 auto;
+
+  color: #70768a;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+}
+
+.register-header strong {
+  display: block;
+
+  margin-top: 10px;
+
+  color: #7167e8;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  word-break: break-word;
+}
+
+/* ================= ERROR ================= */
+
+.register-error {
+  margin-bottom: 20px;
+
+  padding: 12px 14px;
+
+  border:
+    1px solid #fecdd3;
+
+  border-radius: 11px;
+
+  background: #fff1f2;
+
+  color: #be123c;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+/* ================= FORM ================= */
+
+.register-form-group {
+  margin-bottom: 20px;
+}
+
+.register-form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #35394c;
+
+  font-size: 13px;
+  font-weight: 650;
+}
+
+/* ================= INPUT ================= */
+
+.register-input-wrapper {
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 0 14px;
+
+  background: #fafbfe;
+
+  border: 1px solid #dfe1eb;
+
+  border-radius: 12px;
+
+  transition: 0.25s;
+}
+
+.register-input-wrapper svg {
+  flex-shrink: 0;
+
+  color: #858aa0;
+
+  font-size: 17px;
+}
+
+.register-input-wrapper:focus-within {
+  background: #ffffff;
+
+  border-color: #8178ee;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(113, 103, 232, 0.08);
+}
+
+.register-input-wrapper input {
+  width: 100%;
+  height: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #202338;
+
+  font-size: 14px;
+}
+
+.register-input-wrapper input::placeholder {
+  color: #a3a7b6;
+}
+
+/* ================= PASSWORD TOGGLE ================= */
+
+.password-toggle {
+  flex-shrink: 0;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  background: transparent;
+
+  color: #8a8fa3;
+
+  font-size: 18px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.password-toggle:hover {
+  color: #7167e8;
+}
+
+/* ================= OTP ================= */
+
+.register-otp-inputs {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  margin: 10px 0 25px;
+}
+
+.register-otp-inputs input {
+  width: 52px;
+  height: 58px;
+
+  text-align: center;
+
+  border: 1px solid #dfe1eb;
+
+  border-radius: 13px;
+
+  outline: none;
+
+  background: #fafbfe;
+
+  color: #202338;
+
+  font-size: 21px;
+  font-weight: 700;
+
+  transition: 0.25s;
+}
+
+.register-otp-inputs input:focus {
+  background: #ffffff;
+
+  border-color: #8178ee;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(113, 103, 232, 0.08);
+}
+
+/* ================= BUTTON ================= */
+
+.register-submit-btn {
+  width: 100%;
+  height: 52px;
+
+  margin-top: 5px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #7167e8;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 25px
+    rgba(113, 103, 232, 0.20);
+
+  transition: 0.25s;
+}
+
+.register-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  background: #6258dc;
+
+  box-shadow:
+    0 15px 30px
+    rgba(113, 103, 232, 0.28);
+}
+
+.register-submit-btn:disabled {
+  opacity: 0.7;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+/* ================= RESEND ================= */
+
+.register-resend {
+  min-height: 40px;
+
+  margin-top: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.register-resend p {
+  margin: 0;
+
+  color: #858a9c;
+
+  font-size: 13px;
+}
+
+.register-resend strong {
+  color: #7167e8;
+}
+
+.register-resend button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #7167e8;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.register-resend button:hover {
+  text-decoration: underline;
+}
+
+.register-resend button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+/* ================= PASSWORD RULES ================= */
+
+.register-password-rules {
+  margin: 4px 0 23px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.register-password-rules div {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  color: #70768a;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.register-password-rules span {
+  width: 20px;
+  height: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #e7e4ff;
+
+  color: #6658e8;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* ================= BACK BUTTON ================= */
+
+.register-back-btn {
+  width: 100%;
+
+  margin-top: 18px;
+
+  padding: 10px 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #858a9c;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.register-back-btn:hover {
+  color: #7167e8;
+}
+
+.register-back-btn:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+/* ================= LOGIN LINK ================= */
+
+.register-login-text {
+  margin: 15px 0 0;
+
+  padding-top: 20px;
+
+  border-top: 1px solid #ececf3;
+
+  text-align: center;
+
+  color: #858a9c;
+
+  font-size: 13px;
+}
+
+.register-login-text a {
+  color: #7167e8;
+
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+.register-login-text a:hover {
+  text-decoration: underline;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 700px) {
+
+  .register-page {
+    padding: 105px 20px 40px;
+  }
+
+  .register-card {
+    max-width: 500px;
+
+    padding: 42px 38px;
+
+    border-radius: 24px;
+  }
+
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 500px) {
+
+  .register-page {
+    padding: 95px 15px 30px;
+  }
+
+  .register-card {
+    padding: 35px 24px;
+
+    border-radius: 20px;
+  }
+
+  .register-icon {
+    width: 52px;
+    height: 52px;
+
+    margin-bottom: 20px;
+
+    font-size: 22px;
+  }
+
+  .register-header {
+    margin-bottom: 26px;
+  }
+
+  .register-header h1 {
+    font-size: 31px;
+  }
+
+  .register-header p {
+    font-size: 12px;
+  }
+
+  .register-otp-inputs {
+    gap: 7px;
+  }
+
+  .register-otp-inputs input {
+    width: 43px;
+    height: 52px;
+
+    font-size: 19px;
+  }
+
+}
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width: 370px) {
+
+  .register-card {
+    padding: 30px 18px;
+  }
+
+  .register-otp-inputs {
+    gap: 5px;
+  }
+
+  .register-otp-inputs input {
+    width: 39px;
+    height: 48px;
+  }
+
+}

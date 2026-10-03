@@ -1,0 +1,170 @@
+.navbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: rgba(8, 12, 24, 0.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.nav-container {
+  max-width: 1200px;
+  height: 78px;
+  margin: auto;
+  padding: 0 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo */
+
+.logo {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.logo-main {
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #ffffff;
+}
+
+.logo-sub {
+  margin-top: 5px;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: #6c63ff;
+  font-weight: 700;
+}
+
+/* Desktop Links */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+}
+
+.nav-links a {
+  color: #d8d9e5;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: #7c74ff;
+}
+
+.nav-start-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 12px 20px;
+  border-radius: 30px;
+
+  background: linear-gradient(135deg, #6c63ff, #8b5cf6);
+  color: white !important;
+
+  box-shadow: 0 8px 25px rgba(108, 99, 255, 0.25);
+}
+
+.nav-start-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Mobile Button */
+
+.menu-btn {
+  display: none;
+
+  border: none;
+  background: transparent;
+  color: white;
+
+  font-size: 27px;
+  cursor: pointer;
+}
+
+/* Mobile Menu */
+
+.mobile-menu {
+  display: none;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+  .nav-container {
+    height: 70px;
+    padding: 0 20px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .menu-btn {
+    display: block;
+  }
+
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+
+    padding: 15px 20px 25px;
+
+    background: #080c18;
+
+    max-height: 0;
+    overflow: hidden;
+
+    transition: max-height 0.3s ease;
+  }
+
+  .mobile-menu.show {
+    max-height: 300px;
+  }
+
+  .mobile-menu a {
+    padding: 15px 5px;
+
+    color: #d8d9e5;
+    text-decoration: none;
+
+    font-size: 15px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .mobile-menu a:hover {
+    color: #7c74ff;
+  }
+
+  .mobile-start-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    margin-top: 10px;
+
+    border-radius: 30px;
+
+    background: linear-gradient(135deg, #6c63ff, #8b5cf6);
+
+    color: white !important;
+  }
+}
