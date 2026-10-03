@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+
 import {
   FiMenu,
   FiX,
@@ -32,6 +33,16 @@ function Navbar() {
             alt="Kalley CodeLabs"
             className="logo-image"
           />
+
+          <div className="logo-text">
+            <span className="logo-main">
+              KALLEY
+            </span>
+
+            <span className="logo-sub">
+              CODELABS
+            </span>
+          </div>
         </Link>
 
 
