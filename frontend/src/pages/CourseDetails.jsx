@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import {
+  Link,
+  useParams,
+} from "react-router-dom";
+
+import api from "../api/api";
+
 import StudentFooter from "../components/StudentFooter";
+
 import {
   FiArrowLeft,
   FiCheckCircle,
@@ -11,22 +17,32 @@ import {
   FiBookOpen,
   FiCheck,
 } from "react-icons/fi";
+
 import "./CourseDetails.css";
+
 
 function CourseDetails() {
   const { id } = useParams();
 
-  const [course, setCourse] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [course, setCourse] =
+    useState(null);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    mobile: "",
-    email: "",
-    query: "",
-  });
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
+  const [submitted, setSubmitted] =
+    useState(false);
+
+  const [formData, setFormData] =
+    useState({
+      name: "",
+      mobile: "",
+      email: "",
+      query: "",
+    });
 
 
   // =========================
@@ -37,16 +53,41 @@ function CourseDetails() {
     fetchCourse();
   }, [id]);
 
+
   const fetchCourse = async () => {
     try {
       setLoading(true);
       setError("");
 
-      const response = await axios.get(
-        `http://localhost:5000/api/courses/${id}`
-      );
+      const response =
+        await api.get(
+          `/courses/${id}`
+        );
 
-      setCourse(response.data.course);
+      /*
+       * Backend may return either:
+       *
+       * response.data.course
+       *
+       * OR
+       *
+       * response.data
+       *
+       * So both are handled.
+       */
+
+      const courseData =
+        response.data?.course ||
+        response.data;
+
+      if (!courseData) {
+        setError(
+          "Course details could not be found."
+        );
+        return;
+      }
+
+      setCourse(courseData);
     } catch (error) {
       console.error(
         "Fetch course details error:",
@@ -68,12 +109,17 @@ function CourseDetails() {
   // =========================
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const {
+      name,
+      value,
+    } = e.target;
 
-    setFormData((previous) => ({
-      ...previous,
-      [name]: value,
-    }));
+    setFormData(
+      (previous) => ({
+        ...previous,
+        [name]: value,
+      })
+    );
   };
 
 
@@ -92,26 +138,45 @@ function CourseDetails() {
       alert(
         "Please fill all required fields."
       );
+
+      return;
+    }
+
+    if (!course) {
+      alert(
+        "Course information is not available."
+      );
+
       return;
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/course-enquiries",
-        {
-          name: formData.name.trim(),
-          mobile: formData.mobile.trim(),
-          email:
-            formData.email
-              .trim()
-              .toLowerCase(),
-          course: course.name,
-          query: formData.query.trim(),
-        }
-      );
+      const response =
+        await api.post(
+          "/course-enquiries",
+          {
+            name:
+              formData.name.trim(),
+
+            mobile:
+              formData.mobile.trim(),
+
+            email:
+              formData.email
+                .trim()
+                .toLowerCase(),
+
+            course:
+              course.name,
+
+            query:
+              formData.query.trim(),
+          }
+        );
 
       alert(
-        response.data.message
+        response.data?.message ||
+          "Enquiry submitted successfully."
       );
 
       setSubmitted(true);
@@ -129,7 +194,8 @@ function CourseDetails() {
       );
 
       alert(
-        error.response?.data?.message ||
+        error.response?.data
+          ?.message ||
           "Failed to submit enquiry. Please try again."
       );
     }
@@ -468,14 +534,17 @@ function CourseDetails() {
               </h2>
 
 
-              {course.skills?.length > 0 ? (
+              {course.skills?.length >
+              0 ? (
 
                 <div className="course-detail-skills">
 
                   {course.skills.map(
                     (skill) => (
 
-                      <span key={skill}>
+                      <span
+                        key={skill}
+                      >
                         {skill}
                       </span>
 
@@ -853,11 +922,9 @@ function CourseDetails() {
                     type="submit"
                     className="course-enquiry-submit"
                   >
-
                     Send Enquiry
 
                     <FiSend />
-
                   </button>
 
                 </form>
@@ -907,10 +974,12 @@ function CourseDetails() {
         </div>
 
       </main>
+
       <StudentFooter />
 
     </div>
   );
 }
+
 
 export default CourseDetails;
