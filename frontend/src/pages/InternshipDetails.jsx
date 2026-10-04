@@ -40,6 +40,43 @@ function InternshipDetails() {
     setError,
   ] = useState("");
 
+  // =====================================================
+  // APPLICATION STATES
+  // =====================================================
+
+  const [
+    showApplicationForm,
+    setShowApplicationForm,
+  ] = useState(false);
+
+  const [
+    applicationLoading,
+    setApplicationLoading,
+  ] = useState(false);
+
+  const [
+    applicationSuccess,
+    setApplicationSuccess,
+  ] = useState(false);
+
+  const [
+    applicationError,
+    setApplicationError,
+  ] = useState("");
+
+  const [
+    applicationForm,
+    setApplicationForm,
+  ] = useState({
+    fullName: "",
+    email: "",
+    mobileNumber: "",
+    qualification: "",
+    city: "",
+    resume: "",
+    message: "",
+  });
+
 
   // =====================================================
   // FETCH INTERNSHIP
@@ -97,6 +134,167 @@ function InternshipDetails() {
   useEffect(() => {
     fetchInternship();
   }, [id]);
+
+
+  // =====================================================
+  // APPLICATION INPUT CHANGE
+  // =====================================================
+
+  const handleApplicationChange =
+    (event) => {
+      const {
+        name,
+        value,
+      } = event.target;
+
+      setApplicationForm(
+        (previous) => ({
+          ...previous,
+          [name]: value,
+        })
+      );
+    };
+
+
+  // =====================================================
+  // OPEN APPLICATION FORM
+  // =====================================================
+
+  const handleApplyClick = () => {
+    setApplicationError("");
+    setApplicationSuccess(false);
+    setShowApplicationForm(true);
+
+    setTimeout(() => {
+      document
+        .querySelector(
+          ".internship-application-form"
+        )
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+    }, 100);
+  };
+
+
+  // =====================================================
+  // CLOSE APPLICATION FORM
+  // =====================================================
+
+  const handleCloseApplication = () => {
+    if (applicationLoading) {
+      return;
+    }
+
+    setShowApplicationForm(false);
+    setApplicationError("");
+  };
+
+
+  // =====================================================
+  // SUBMIT APPLICATION
+  // =====================================================
+
+  const handleApplicationSubmit =
+    async (event) => {
+      event.preventDefault();
+
+      setApplicationError("");
+      setApplicationSuccess(false);
+
+      const {
+        fullName,
+        email,
+        mobileNumber,
+        qualification,
+        city,
+        resume,
+        message,
+      } = applicationForm;
+
+      if (
+        !fullName.trim() ||
+        !email.trim() ||
+        !mobileNumber.trim() ||
+        !qualification.trim() ||
+        !city.trim()
+      ) {
+        setApplicationError(
+          "Please fill all required fields."
+        );
+
+        return;
+      }
+
+      try {
+        setApplicationLoading(true);
+
+        const response =
+          await api.post(
+            "/internship-applications",
+            {
+              fullName:
+                fullName.trim(),
+
+              email:
+                email
+                  .toLowerCase()
+                  .trim(),
+
+              mobileNumber:
+                mobileNumber.trim(),
+
+              qualification:
+                qualification.trim(),
+
+              city:
+                city.trim(),
+
+              internshipRole:
+                internship.role,
+
+              internshipId:
+                internship._id,
+
+              resume:
+                resume.trim(),
+
+              message:
+                message.trim(),
+            }
+          );
+
+        console.log(
+          "Internship application submitted:",
+          response.data
+        );
+
+        setApplicationSuccess(true);
+
+        setApplicationForm({
+          fullName: "",
+          email: "",
+          mobileNumber: "",
+          qualification: "",
+          city: "",
+          resume: "",
+          message: "",
+        });
+      } catch (error) {
+        console.error(
+          "Internship application submit error:",
+          error
+        );
+
+        setApplicationError(
+          error.response?.data?.message ||
+            "Failed to submit your application. Please try again."
+        );
+      } finally {
+        setApplicationLoading(false);
+      }
+    };
 
 
   // =====================================================
@@ -452,7 +650,7 @@ function InternshipDetails() {
               </span>
 
               <h2>
-                Skills &
+                Skills &amp;
                 <strong>
                   {" "}technologies.
                 </strong>
@@ -744,26 +942,321 @@ function InternshipDetails() {
             </div>
 
 
-            <button
-              type="button"
-              className="internship-apply-btn"
-              onClick={() =>
-                alert(
-                  "Internship application feature will be connected soon."
-                )
-              }
-            >
-              Apply Now
-              <FiSend />
-            </button>
+            {/* =========================
+                APPLICATION FORM
+                ========================= */}
+
+            {!showApplicationForm &&
+            !applicationSuccess ? (
+
+              <button
+                type="button"
+                className="internship-apply-btn"
+                onClick={
+                  handleApplyClick
+                }
+              >
+                Apply Now
+                <FiSend />
+              </button>
+
+            ) : null}
 
 
-            <p className="internship-apply-note">
-              Our team will review your
-              application and contact you
-              if your profile matches the
-              opportunity.
-            </p>
+            {showApplicationForm &&
+            !applicationSuccess && (
+
+              <form
+                className="internship-application-form"
+                onSubmit={
+                  handleApplicationSubmit
+                }
+              >
+
+                <div className="internship-application-form-header">
+
+                  <h3>
+                    Internship Application
+                  </h3>
+
+                  <p>
+                    Please provide your details
+                    to apply for this internship.
+                  </p>
+
+                </div>
+
+
+                {applicationError && (
+
+                  <div className="internship-application-error">
+                    {applicationError}
+                  </div>
+
+                )}
+
+
+                <div className="internship-application-field">
+
+                  <label htmlFor="fullName">
+                    Full Name *
+                  </label>
+
+                  <input
+                    id="fullName"
+                    name="fullName"
+                    type="text"
+                    value={
+                      applicationForm.fullName
+                    }
+                    onChange={
+                      handleApplicationChange
+                    }
+                    placeholder="Enter your full name"
+                    required
+                  />
+
+                </div>
+
+
+                <div className="internship-application-field">
+
+                  <label htmlFor="email">
+                    Email *
+                  </label>
+
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={
+                      applicationForm.email
+                    }
+                    onChange={
+                      handleApplicationChange
+                    }
+                    placeholder="Enter your email"
+                    required
+                  />
+
+                </div>
+
+
+                <div className="internship-application-field">
+
+                  <label htmlFor="mobileNumber">
+                    Mobile Number *
+                  </label>
+
+                  <input
+                    id="mobileNumber"
+                    name="mobileNumber"
+                    type="tel"
+                    value={
+                      applicationForm.mobileNumber
+                    }
+                    onChange={
+                      handleApplicationChange
+                    }
+                    placeholder="Enter your mobile number"
+                    required
+                  />
+
+                </div>
+
+
+                <div className="internship-application-field">
+
+                  <label htmlFor="qualification">
+                    Qualification *
+                  </label>
+
+                  <input
+                    id="qualification"
+                    name="qualification"
+                    type="text"
+                    value={
+                      applicationForm.qualification
+                    }
+                    onChange={
+                      handleApplicationChange
+                    }
+                    placeholder="Example: BCA, BTech, MCA"
+                    required
+                  />
+
+                </div>
+
+
+                <div className="internship-application-field">
+
+                  <label htmlFor="city">
+                    City *
+                  </label>
+
+                  <input
+                    id="city"
+                    name="city"
+                    type="text"
+                    value={
+                      applicationForm.city
+                    }
+                    onChange={
+                      handleApplicationChange
+                    }
+                    placeholder="Enter your city"
+                    required
+                  />
+
+                </div>
+
+
+                <div className="internship-application-field">
+
+                  <label htmlFor="resume">
+                    Resume URL
+                  </label>
+
+                  <input
+                    id="resume"
+                    name="resume"
+                    type="url"
+                    value={
+                      applicationForm.resume
+                    }
+                    onChange={
+                      handleApplicationChange
+                    }
+                    placeholder="https://..."
+                  />
+
+                  <small>
+                    Add a Google Drive,
+                    Dropbox or other
+                    publicly accessible
+                    resume link.
+                  </small>
+
+                </div>
+
+
+                <div className="internship-application-field">
+
+                  <label htmlFor="message">
+                    Message
+                  </label>
+
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows="4"
+                    value={
+                      applicationForm.message
+                    }
+                    onChange={
+                      handleApplicationChange
+                    }
+                    placeholder="Tell us briefly about yourself..."
+                  />
+
+                </div>
+
+
+                <div className="internship-application-actions">
+
+                  <button
+                    type="button"
+                    className="internship-application-cancel"
+                    onClick={
+                      handleCloseApplication
+                    }
+                    disabled={
+                      applicationLoading
+                    }
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    type="submit"
+                    className="internship-apply-btn"
+                    disabled={
+                      applicationLoading
+                    }
+                  >
+                    {applicationLoading
+                      ? "Submitting..."
+                      : "Submit Application"}
+
+                    {!applicationLoading && (
+                      <FiSend />
+                    )}
+                  </button>
+
+                </div>
+
+              </form>
+            )}
+
+
+            {/* =========================
+                SUCCESS MESSAGE
+                ========================= */}
+
+            {applicationSuccess && (
+
+              <div className="internship-application-success">
+
+                <FiCheckCircle />
+
+                <h3>
+                  Application Submitted!
+                </h3>
+
+                <p>
+                  Thank you for applying
+                  for this internship.
+                  Our team will review
+                  your application and
+                  contact you if your
+                  profile matches the
+                  opportunity.
+                </p>
+
+                <button
+                  type="button"
+                  className="internship-apply-btn"
+                  onClick={() => {
+                    setApplicationSuccess(
+                      false
+                    );
+
+                    setShowApplicationForm(
+                      true
+                    );
+
+                    setApplicationError("");
+                  }}
+                >
+                  Submit Another Application
+                </button>
+
+              </div>
+
+            )}
+
+
+            {!showApplicationForm &&
+            !applicationSuccess && (
+
+              <p className="internship-apply-note">
+                Our team will review your
+                application and contact you
+                if your profile matches the
+                opportunity.
+              </p>
+
+            )}
 
           </aside>
 

@@ -44,6 +44,10 @@ const jobRoutes = require("./routes/jobRoutes");
 const internshipRoutes = require("./routes/internshipRoutes");
 const courseRoutes = require("./routes/courseRoutes");
 
+// INTERNSHIP APPLICATIONS
+const internshipApplicationRoutes =
+  require("./routes/internshipApplicationRoutes");
+
 // =========================
 // ROOT ROUTE
 // =========================
@@ -86,6 +90,12 @@ app.use("/api/jobs", jobRoutes);
 app.use(
   "/api/internships",
   internshipRoutes
+);
+
+// INTERNSHIP APPLICATIONS
+app.use(
+  "/api/internship-applications",
+  internshipApplicationRoutes
 );
 
 // COURSES
