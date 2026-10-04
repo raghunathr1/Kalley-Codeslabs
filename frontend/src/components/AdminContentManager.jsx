@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import {
   FiRefreshCw,
   FiEdit2,
@@ -11,28 +10,45 @@ import {
   FiSave,
 } from "react-icons/fi";
 
+import api from "../api/api";
+
 import "./AdminContentManager.css";
 
-const API_BASE_URL = "http://localhost:5000/api";
-
 function AdminContentManager({ onUnauthorized }) {
-  const [activeTab, setActiveTab] = useState("jobs");
+  const [activeTab, setActiveTab] =
+    useState("jobs");
 
-  const [jobs, setJobs] = useState([]);
-  const [internships, setInternships] = useState([]);
-  const [courses, setCourses] = useState([]);
+  const [jobs, setJobs] =
+    useState([]);
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [internships, setInternships] =
+    useState([]);
 
-  const [editingItem, setEditingItem] = useState(null);
-  const [editingType, setEditingType] = useState("");
+  const [courses, setCourses] =
+    useState([]);
 
-  const [saving, setSaving] = useState(false);
+  const [loading, setLoading] =
+    useState(true);
 
-  const [formData, setFormData] = useState({});
+  const [error, setError] =
+    useState("");
 
-  const adminToken = localStorage.getItem("adminToken");
+  const [editingItem, setEditingItem] =
+    useState(null);
+
+  const [editingType, setEditingType] =
+    useState("");
+
+  const [saving, setSaving] =
+    useState(false);
+
+  const [formData, setFormData] =
+    useState({});
+
+  const adminToken =
+    localStorage.getItem(
+      "adminToken"
+    );
 
   // =========================
   // FETCH ALL CONTENT
@@ -43,20 +59,37 @@ function AdminContentManager({ onUnauthorized }) {
       setLoading(true);
       setError("");
 
-      const [jobsResponse, internshipsResponse, coursesResponse] =
-        await Promise.all([
-          axios.get(`${API_BASE_URL}/jobs`),
-          axios.get(`${API_BASE_URL}/internships`),
-          axios.get(`${API_BASE_URL}/courses`),
-        ]);
+      const [
+        jobsResponse,
+        internshipsResponse,
+        coursesResponse,
+      ] = await Promise.all([
+        api.get("/jobs"),
+        api.get("/internships"),
+        api.get("/courses"),
+      ]);
 
-      setJobs(jobsResponse.data || []);
-      setInternships(internshipsResponse.data || []);
-      setCourses(coursesResponse.data || []);
+      setJobs(
+        jobsResponse.data || []
+      );
+
+      setInternships(
+        internshipsResponse.data || []
+      );
+
+      setCourses(
+        coursesResponse.data || []
+      );
     } catch (error) {
-      console.error("Fetch content error:", error);
+      console.error(
+        "Fetch content error:",
+        error
+      );
 
-      if (error.response?.status === 401) {
+      if (
+        error.response?.status ===
+        401
+      ) {
         onUnauthorized();
         return;
       }
@@ -79,30 +112,47 @@ function AdminContentManager({ onUnauthorized }) {
   // =========================
 
   const deleteJob = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this job?"
-    );
+    const confirmDelete =
+      window.confirm(
+        "Are you sure you want to delete this job?"
+      );
 
     if (!confirmDelete) {
       return;
     }
 
     try {
-      await axios.delete(`${API_BASE_URL}/jobs/${id}`, {
-        headers: {
-          Authorization: `Bearer ${adminToken}`,
-        },
-      });
-
-      setJobs((previousJobs) =>
-        previousJobs.filter((job) => job._id !== id)
+      await api.delete(
+        `/jobs/${id}`,
+        {
+          headers: {
+            Authorization:
+              `Bearer ${adminToken}`,
+          },
+        }
       );
 
-      alert("Job deleted successfully");
-    } catch (error) {
-      console.error("Delete job error:", error);
+      setJobs(
+        (previousJobs) =>
+          previousJobs.filter(
+            (job) =>
+              job._id !== id
+          )
+      );
 
-      if (error.response?.status === 401) {
+      alert(
+        "Job deleted successfully"
+      );
+    } catch (error) {
+      console.error(
+        "Delete job error:",
+        error
+      );
+
+      if (
+        error.response?.status ===
+        401
+      ) {
         onUnauthorized();
         return;
       }
@@ -118,39 +168,50 @@ function AdminContentManager({ onUnauthorized }) {
   // DELETE INTERNSHIP
   // =========================
 
-  const deleteInternship = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this internship?"
-    );
+  const deleteInternship = async (
+    id
+  ) => {
+    const confirmDelete =
+      window.confirm(
+        "Are you sure you want to delete this internship?"
+      );
 
     if (!confirmDelete) {
       return;
     }
 
     try {
-      await axios.delete(
-        `${API_BASE_URL}/internships/${id}`,
+      await api.delete(
+        `/internships/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${adminToken}`,
+            Authorization:
+              `Bearer ${adminToken}`,
           },
         }
       );
 
-      setInternships((previousInternships) =>
-        previousInternships.filter(
-          (internship) => internship._id !== id
-        )
+      setInternships(
+        (previousInternships) =>
+          previousInternships.filter(
+            (internship) =>
+              internship._id !== id
+          )
       );
 
-      alert("Internship deleted successfully");
+      alert(
+        "Internship deleted successfully"
+      );
     } catch (error) {
       console.error(
         "Delete internship error:",
         error
       );
 
-      if (error.response?.status === 401) {
+      if (
+        error.response?.status ===
+        401
+      ) {
         onUnauthorized();
         return;
       }
@@ -166,36 +227,50 @@ function AdminContentManager({ onUnauthorized }) {
   // DELETE COURSE
   // =========================
 
-  const deleteCourse = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this course?"
-    );
+  const deleteCourse = async (
+    id
+  ) => {
+    const confirmDelete =
+      window.confirm(
+        "Are you sure you want to delete this course?"
+      );
 
     if (!confirmDelete) {
       return;
     }
 
     try {
-      await axios.delete(
-        `${API_BASE_URL}/courses/${id}`,
+      await api.delete(
+        `/courses/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${adminToken}`,
+            Authorization:
+              `Bearer ${adminToken}`,
           },
         }
       );
 
-      setCourses((previousCourses) =>
-        previousCourses.filter(
-          (course) => course._id !== id
-        )
+      setCourses(
+        (previousCourses) =>
+          previousCourses.filter(
+            (course) =>
+              course._id !== id
+          )
       );
 
-      alert("Course deleted successfully");
+      alert(
+        "Course deleted successfully"
+      );
     } catch (error) {
-      console.error("Delete course error:", error);
+      console.error(
+        "Delete course error:",
+        error
+      );
 
-      if (error.response?.status === 401) {
+      if (
+        error.response?.status ===
+        401
+      ) {
         onUnauthorized();
         return;
       }
@@ -223,7 +298,9 @@ function AdminContentManager({ onUnauthorized }) {
   // DATE FORMAT
   // =========================
 
-  const formatDateForInput = (value) => {
+  const formatDateForInput = (
+    value
+  ) => {
     if (!value) {
       return "";
     }
@@ -244,20 +321,32 @@ function AdminContentManager({ onUnauthorized }) {
     setFormData({
       role: job.role || "",
       company: job.company || "",
-      skills: arrayToText(job.skills),
+      skills: arrayToText(
+        job.skills
+      ),
       salary: job.salary || "",
-      education: job.education || "",
-      responsibilities: arrayToText(
-        job.responsibilities
-      ),
-      location: job.location || "",
-      openings: job.openings || 1,
-      experience: job.experience || "Fresher",
-      aboutRole: job.aboutRole || "",
-      expiryDate: formatDateForInput(
-        job.expiryDate
-      ),
-      status: job.status || "Published",
+      education:
+        job.education || "",
+      responsibilities:
+        arrayToText(
+          job.responsibilities
+        ),
+      location:
+        job.location || "",
+      openings:
+        job.openings || 1,
+      experience:
+        job.experience ||
+        "Fresher",
+      aboutRole:
+        job.aboutRole || "",
+      expiryDate:
+        formatDateForInput(
+          job.expiryDate
+        ),
+      status:
+        job.status ||
+        "Published",
     });
   };
 
@@ -265,30 +354,56 @@ function AdminContentManager({ onUnauthorized }) {
   // OPEN INTERNSHIP EDIT
   // =========================
 
-  const openInternshipEdit = (internship) => {
-    setEditingType("internship");
-    setEditingItem(internship);
+  const openInternshipEdit = (
+    internship
+  ) => {
+    setEditingType(
+      "internship"
+    );
+
+    setEditingItem(
+      internship
+    );
 
     setFormData({
-      role: internship.role || "",
-      company: internship.company || "",
-      skills: arrayToText(internship.skills),
-      stipend: internship.stipend || "",
-      duration: internship.duration || "",
-      education: internship.education || "",
-      responsibilities: arrayToText(
-        internship.responsibilities
-      ),
-      location: internship.location || "",
-      openings: internship.openings || 1,
+      role:
+        internship.role || "",
+      company:
+        internship.company ||
+        "",
+      skills:
+        arrayToText(
+          internship.skills
+        ),
+      stipend:
+        internship.stipend || "",
+      duration:
+        internship.duration || "",
+      education:
+        internship.education ||
+        "",
+      responsibilities:
+        arrayToText(
+          internship.responsibilities
+        ),
+      location:
+        internship.location ||
+        "",
+      openings:
+        internship.openings || 1,
       experience:
-        internship.experience || "Fresher",
-      aboutRole: internship.aboutRole || "",
-      expiryDate: formatDateForInput(
-        internship.expiryDate
-      ),
+        internship.experience ||
+        "Fresher",
+      aboutRole:
+        internship.aboutRole ||
+        "",
+      expiryDate:
+        formatDateForInput(
+          internship.expiryDate
+        ),
       status:
-        internship.status || "Published",
+        internship.status ||
+        "Published",
     });
   };
 
@@ -296,18 +411,32 @@ function AdminContentManager({ onUnauthorized }) {
   // OPEN COURSE EDIT
   // =========================
 
-  const openCourseEdit = (course) => {
+  const openCourseEdit = (
+    course
+  ) => {
     setEditingType("course");
     setEditingItem(course);
 
     setFormData({
       name: course.name || "",
-      duration: course.duration || "",
-      location: course.location || "",
-      description: course.description || "",
-      skills: arrayToText(course.skills),
-      highlights: arrayToText(course.highlights),
-      status: course.status || "Published",
+      duration:
+        course.duration || "",
+      location:
+        course.location || "",
+      description:
+        course.description ||
+        "",
+      skills:
+        arrayToText(
+          course.skills
+        ),
+      highlights:
+        arrayToText(
+          course.highlights
+        ),
+      status:
+        course.status ||
+        "Published",
     });
   };
 
@@ -315,13 +444,20 @@ function AdminContentManager({ onUnauthorized }) {
   // FORM CHANGE
   // =========================
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
+  const handleChange = (
+    event
+  ) => {
+    const {
+      name,
+      value,
+    } = event.target;
 
-    setFormData((previousData) => ({
-      ...previousData,
-      [name]: value,
-    }));
+    setFormData(
+      (previousData) => ({
+        ...previousData,
+        [name]: value,
+      })
+    );
   };
 
   // =========================
@@ -329,13 +465,18 @@ function AdminContentManager({ onUnauthorized }) {
   // =========================
 
   const textToArray = (value) => {
-    if (!value || !value.trim()) {
+    if (
+      !value ||
+      !value.trim()
+    ) {
       return [];
     }
 
     return value
       .split(/\n|,/)
-      .map((item) => item.trim())
+      .map((item) =>
+        item.trim()
+      )
       .filter(Boolean);
   };
 
@@ -360,49 +501,86 @@ function AdminContentManager({ onUnauthorized }) {
   const updateJob = async () => {
     try {
       const payload = {
-        role: formData.role.trim(),
-        company: formData.company.trim(),
-        skills: textToArray(formData.skills),
-        salary: formData.salary.trim(),
-        education: formData.education.trim(),
-        responsibilities: textToArray(
-          formData.responsibilities
+        role:
+          formData.role.trim(),
+
+        company:
+          formData.company.trim(),
+
+        skills:
+          textToArray(
+            formData.skills
+          ),
+
+        salary:
+          formData.salary.trim(),
+
+        education:
+          formData.education.trim(),
+
+        responsibilities:
+          textToArray(
+            formData.responsibilities
+          ),
+
+        location:
+          formData.location.trim(),
+
+        openings: Number(
+          formData.openings
         ),
-        location: formData.location.trim(),
-        openings: Number(formData.openings),
+
         experience:
           formData.experience.trim(),
+
         aboutRole:
           formData.aboutRole.trim(),
-        expiryDate: formData.expiryDate,
-        status: formData.status,
+
+        expiryDate:
+          formData.expiryDate,
+
+        status:
+          formData.status,
       };
 
-      const response = await axios.put(
-        `${API_BASE_URL}/jobs/${editingItem._id}`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${adminToken}`,
-          },
-        }
+      const response =
+        await api.put(
+          `/jobs/${editingItem._id}`,
+          payload,
+          {
+            headers: {
+              Authorization:
+                `Bearer ${adminToken}`,
+            },
+          }
+        );
+
+      setJobs(
+        (previousJobs) =>
+          previousJobs.map(
+            (job) =>
+              job._id ===
+              editingItem._id
+                ? response.data.job
+                : job
+          )
       );
 
-      setJobs((previousJobs) =>
-        previousJobs.map((job) =>
-          job._id === editingItem._id
-            ? response.data.job
-            : job
-        )
+      alert(
+        "Job updated successfully"
       );
-
-      alert("Job updated successfully");
 
       closeEditModal();
     } catch (error) {
-      console.error("Update job error:", error);
+      console.error(
+        "Update job error:",
+        error
+      );
 
-      if (error.response?.status === 401) {
+      if (
+        error.response?.status ===
+        401
+      ) {
         onUnauthorized();
         return;
       }
@@ -418,150 +596,226 @@ function AdminContentManager({ onUnauthorized }) {
   // SAVE INTERNSHIP
   // =========================
 
-  const updateInternship = async () => {
-    try {
-      const payload = {
-        role: formData.role.trim(),
-        company: formData.company.trim(),
-        skills: textToArray(formData.skills),
-        stipend: formData.stipend.trim(),
-        duration: formData.duration.trim(),
-        education: formData.education.trim(),
-        responsibilities: textToArray(
-          formData.responsibilities
-        ),
-        location: formData.location.trim(),
-        openings: Number(formData.openings),
-        experience:
-          formData.experience.trim(),
-        aboutRole:
-          formData.aboutRole.trim(),
-        expiryDate: formData.expiryDate,
-        status: formData.status,
-      };
+  const updateInternship =
+    async () => {
+      try {
+        const payload = {
+          role:
+            formData.role.trim(),
 
-      const response = await axios.put(
-        `${API_BASE_URL}/internships/${editingItem._id}`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${adminToken}`,
-          },
+          company:
+            formData.company.trim(),
+
+          skills:
+            textToArray(
+              formData.skills
+            ),
+
+          stipend:
+            formData.stipend.trim(),
+
+          duration:
+            formData.duration.trim(),
+
+          education:
+            formData.education.trim(),
+
+          responsibilities:
+            textToArray(
+              formData.responsibilities
+            ),
+
+          location:
+            formData.location.trim(),
+
+          openings: Number(
+            formData.openings
+          ),
+
+          experience:
+            formData.experience.trim(),
+
+          aboutRole:
+            formData.aboutRole.trim(),
+
+          expiryDate:
+            formData.expiryDate,
+
+          status:
+            formData.status,
+        };
+
+        const response =
+          await api.put(
+            `/internships/${editingItem._id}`,
+            payload,
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${adminToken}`,
+              },
+            }
+          );
+
+        setInternships(
+          (
+            previousInternships
+          ) =>
+            previousInternships.map(
+              (internship) =>
+                internship._id ===
+                editingItem._id
+                  ? response.data
+                      .internship
+                  : internship
+            )
+        );
+
+        alert(
+          "Internship updated successfully"
+        );
+
+        closeEditModal();
+      } catch (error) {
+        console.error(
+          "Update internship error:",
+          error
+        );
+
+        if (
+          error.response?.status ===
+          401
+        ) {
+          onUnauthorized();
+          return;
         }
-      );
 
-      setInternships(
-        (previousInternships) =>
-          previousInternships.map(
-            (internship) =>
-              internship._id === editingItem._id
-                ? response.data.internship
-                : internship
-          )
-      );
-
-      alert("Internship updated successfully");
-
-      closeEditModal();
-    } catch (error) {
-      console.error(
-        "Update internship error:",
-        error
-      );
-
-      if (error.response?.status === 401) {
-        onUnauthorized();
-        return;
+        alert(
+          error.response?.data?.message ||
+            "Failed to update internship"
+        );
       }
-
-      alert(
-        error.response?.data?.message ||
-          "Failed to update internship"
-      );
-    }
-  };
+    };
 
   // =========================
   // SAVE COURSE
   // =========================
 
-  const updateCourse = async () => {
-    try {
-      const payload = {
-        name: formData.name.trim(),
-        duration: formData.duration.trim(),
-        location: formData.location.trim(),
-        description:
-          formData.description.trim(),
-        skills: textToArray(formData.skills),
-        highlights: textToArray(
-          formData.highlights
-        ),
-        status: formData.status,
-      };
+  const updateCourse =
+    async () => {
+      try {
+        const payload = {
+          name:
+            formData.name.trim(),
 
-      const response = await axios.put(
-        `${API_BASE_URL}/courses/${editingItem._id}`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${adminToken}`,
-          },
+          duration:
+            formData.duration.trim(),
+
+          location:
+            formData.location.trim(),
+
+          description:
+            formData.description.trim(),
+
+          skills:
+            textToArray(
+              formData.skills
+            ),
+
+          highlights:
+            textToArray(
+              formData.highlights
+            ),
+
+          status:
+            formData.status,
+        };
+
+        const response =
+          await api.put(
+            `/courses/${editingItem._id}`,
+            payload,
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${adminToken}`,
+              },
+            }
+          );
+
+        setCourses(
+          (previousCourses) =>
+            previousCourses.map(
+              (course) =>
+                course._id ===
+                editingItem._id
+                  ? response.data
+                      .course
+                  : course
+            )
+        );
+
+        alert(
+          "Course updated successfully"
+        );
+
+        closeEditModal();
+      } catch (error) {
+        console.error(
+          "Update course error:",
+          error
+        );
+
+        if (
+          error.response?.status ===
+          401
+        ) {
+          onUnauthorized();
+          return;
         }
-      );
 
-      setCourses((previousCourses) =>
-        previousCourses.map((course) =>
-          course._id === editingItem._id
-            ? response.data.course
-            : course
-        )
-      );
-
-      alert("Course updated successfully");
-
-      closeEditModal();
-    } catch (error) {
-      console.error(
-        "Update course error:",
-        error
-      );
-
-      if (error.response?.status === 401) {
-        onUnauthorized();
-        return;
+        alert(
+          error.response?.data?.message ||
+            "Failed to update course"
+        );
       }
-
-      alert(
-        error.response?.data?.message ||
-          "Failed to update course"
-      );
-    }
-  };
+    };
 
   // =========================
   // SAVE CHANGES
   // =========================
 
-  const handleSave = async (event) => {
+  const handleSave = async (
+    event
+  ) => {
     event.preventDefault();
 
-    if (!editingItem || !editingType) {
+    if (
+      !editingItem ||
+      !editingType
+    ) {
       return;
     }
 
     try {
       setSaving(true);
 
-      if (editingType === "job") {
+      if (
+        editingType === "job"
+      ) {
         await updateJob();
       }
 
-      if (editingType === "internship") {
+      if (
+        editingType ===
+        "internship"
+      ) {
         await updateInternship();
       }
 
-      if (editingType === "course") {
+      if (
+        editingType === "course"
+      ) {
         await updateCourse();
       }
     } finally {
@@ -575,14 +829,20 @@ function AdminContentManager({ onUnauthorized }) {
 
   return (
     <section className="admin-content-manager">
+
       <div className="content-manager-header">
+
         <div>
-          <h2>Manage Website Content</h2>
+
+          <h2>
+            Manage Website Content
+          </h2>
 
           <p>
             Manage jobs, internships and courses
             directly from MongoDB.
           </p>
+
         </div>
 
         <button
@@ -593,17 +853,21 @@ function AdminContentManager({ onUnauthorized }) {
         >
           <FiRefreshCw
             className={
-              loading ? "refresh-spinning" : ""
+              loading
+                ? "refresh-spinning"
+                : ""
             }
           />
 
           Refresh
         </button>
+
       </div>
 
       {/* TABS */}
 
       <div className="content-tabs">
+
         <button
           type="button"
           className={
@@ -611,55 +875,73 @@ function AdminContentManager({ onUnauthorized }) {
               ? "content-tab active"
               : "content-tab"
           }
-          onClick={() => setActiveTab("jobs")}
+          onClick={() =>
+            setActiveTab("jobs")
+          }
         >
           <FiBriefcase />
 
           Jobs
 
-          <span>{jobs.length}</span>
+          <span>
+            {jobs.length}
+          </span>
         </button>
 
         <button
           type="button"
           className={
-            activeTab === "internships"
+            activeTab ===
+            "internships"
               ? "content-tab active"
               : "content-tab"
           }
           onClick={() =>
-            setActiveTab("internships")
+            setActiveTab(
+              "internships"
+            )
           }
         >
           <FiBookOpen />
 
           Internships
 
-          <span>{internships.length}</span>
+          <span>
+            {internships.length}
+          </span>
         </button>
 
         <button
           type="button"
           className={
-            activeTab === "courses"
+            activeTab ===
+            "courses"
               ? "content-tab active"
               : "content-tab"
           }
-          onClick={() => setActiveTab("courses")}
+          onClick={() =>
+            setActiveTab("courses")
+          }
         >
           <FiAward />
 
           Courses
 
-          <span>{courses.length}</span>
+          <span>
+            {courses.length}
+          </span>
         </button>
+
       </div>
 
       {/* ERROR */}
 
       {error && (
         <div className="content-error">
-          <p>{error}</p>
+
+          <p>
+            {error}
+          </p>
 
           <button
             type="button"
@@ -667,6 +949,7 @@ function AdminContentManager({ onUnauthorized }) {
           >
             Try Again
           </button>
+
         </div>
       )}
 
@@ -674,292 +957,405 @@ function AdminContentManager({ onUnauthorized }) {
 
       {loading ? (
         <div className="content-loading">
+
           <div className="loading-spinner"></div>
 
-          <p>Loading content...</p>
+          <p>
+            Loading content...
+          </p>
+
         </div>
       ) : (
         <>
+
           {/* JOBS */}
 
-          {activeTab === "jobs" && (
+          {activeTab ===
+            "jobs" && (
             <div className="managed-list">
-              {jobs.length === 0 ? (
+
+              {jobs.length ===
+              0 ? (
                 <div className="empty-content">
+
                   <FiBriefcase />
 
-                  <h3>No Jobs Found</h3>
+                  <h3>
+                    No Jobs Found
+                  </h3>
 
                   <p>
                     Add a job from the dashboard
                     above.
                   </p>
+
                 </div>
               ) : (
-                jobs.map((job) => (
-                  <div
-                    className="managed-card"
-                    key={job._id}
-                  >
-                    <div className="managed-card-icon">
-                      <FiBriefcase />
-                    </div>
+                jobs.map(
+                  (job) => (
+                    <div
+                      className="managed-card"
+                      key={job._id}
+                    >
 
-                    <div className="managed-card-content">
-                      <div className="managed-card-top">
-                        <div>
-                          <h3>{job.role}</h3>
+                      <div className="managed-card-icon">
+                        <FiBriefcase />
+                      </div>
 
-                          <p className="managed-company">
-                            {job.company}
-                          </p>
+                      <div className="managed-card-content">
+
+                        <div className="managed-card-top">
+
+                          <div>
+
+                            <h3>
+                              {job.role}
+                            </h3>
+
+                            <p className="managed-company">
+                              {job.company}
+                            </p>
+
+                          </div>
+
+                          <span
+                            className={`status-badge ${
+                              job.status?.toLowerCase() ||
+                              "published"
+                            }`}
+                          >
+                            {job.status}
+                          </span>
+
                         </div>
 
-                        <span
-                          className={`status-badge ${
-                            job.status?.toLowerCase() ||
-                            "published"
-                          }`}
+                        <div className="managed-info">
+
+                          <span>
+                            Location:{" "}
+                            {job.location}
+                          </span>
+
+                          <span>
+                            Salary:{" "}
+                            {job.salary}
+                          </span>
+
+                          <span>
+                            Openings:{" "}
+                            {job.openings}
+                          </span>
+
+                        </div>
+
+                      </div>
+
+                      <div className="managed-actions">
+
+                        <button
+                          type="button"
+                          className="edit-btn"
+                          onClick={() =>
+                            openJobEdit(
+                              job
+                            )
+                          }
                         >
-                          {job.status}
-                        </span>
+                          <FiEdit2 />
+                          Edit
+                        </button>
+
+                        <button
+                          type="button"
+                          className="delete-btn"
+                          onClick={() =>
+                            deleteJob(
+                              job._id
+                            )
+                          }
+                        >
+                          <FiTrash2 />
+                          Delete
+                        </button>
+
                       </div>
 
-                      <div className="managed-info">
-                        <span>
-                          Location:{" "}
-                          {job.location}
-                        </span>
-
-                        <span>
-                          Salary: {job.salary}
-                        </span>
-
-                        <span>
-                          Openings:{" "}
-                          {job.openings}
-                        </span>
-                      </div>
                     </div>
-
-                    <div className="managed-actions">
-                      <button
-                        type="button"
-                        className="edit-btn"
-                        onClick={() =>
-                          openJobEdit(job)
-                        }
-                      >
-                        <FiEdit2 />
-                        Edit
-                      </button>
-
-                      <button
-                        type="button"
-                        className="delete-btn"
-                        onClick={() =>
-                          deleteJob(job._id)
-                        }
-                      >
-                        <FiTrash2 />
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                ))
+                  )
+                )
               )}
+
             </div>
           )}
 
           {/* INTERNSHIPS */}
 
-          {activeTab === "internships" && (
+          {activeTab ===
+            "internships" && (
             <div className="managed-list">
-              {internships.length === 0 ? (
+
+              {internships.length ===
+              0 ? (
                 <div className="empty-content">
+
                   <FiBookOpen />
 
-                  <h3>No Internships Found</h3>
+                  <h3>
+                    No Internships Found
+                  </h3>
 
                   <p>
                     Add an internship from the
                     dashboard above.
                   </p>
+
                 </div>
               ) : (
-                internships.map((internship) => (
-                  <div
-                    className="managed-card"
-                    key={internship._id}
-                  >
-                    <div className="managed-card-icon">
-                      <FiBookOpen />
-                    </div>
+                internships.map(
+                  (
+                    internship
+                  ) => (
+                    <div
+                      className="managed-card"
+                      key={
+                        internship._id
+                      }
+                    >
 
-                    <div className="managed-card-content">
-                      <div className="managed-card-top">
-                        <div>
-                          <h3>
-                            {internship.role}
-                          </h3>
+                      <div className="managed-card-icon">
+                        <FiBookOpen />
+                      </div>
 
-                          <p className="managed-company">
-                            {internship.company}
-                          </p>
+                      <div className="managed-card-content">
+
+                        <div className="managed-card-top">
+
+                          <div>
+
+                            <h3>
+                              {
+                                internship.role
+                              }
+                            </h3>
+
+                            <p className="managed-company">
+                              {
+                                internship.company
+                              }
+                            </p>
+
+                          </div>
+
+                          <span
+                            className={`status-badge ${
+                              internship.status?.toLowerCase() ||
+                              "published"
+                            }`}
+                          >
+                            {
+                              internship.status
+                            }
+                          </span>
+
                         </div>
 
-                        <span
-                          className={`status-badge ${
-                            internship.status?.toLowerCase() ||
-                            "published"
-                          }`}
+                        <div className="managed-info">
+
+                          <span>
+                            Location:{" "}
+                            {
+                              internship.location
+                            }
+                          </span>
+
+                          <span>
+                            Stipend:{" "}
+                            {
+                              internship.stipend
+                            }
+                          </span>
+
+                          <span>
+                            Duration:{" "}
+                            {
+                              internship.duration
+                            }
+                          </span>
+
+                          <span>
+                            Openings:{" "}
+                            {
+                              internship.openings
+                            }
+                          </span>
+
+                        </div>
+
+                      </div>
+
+                      <div className="managed-actions">
+
+                        <button
+                          type="button"
+                          className="edit-btn"
+                          onClick={() =>
+                            openInternshipEdit(
+                              internship
+                            )
+                          }
                         >
-                          {internship.status}
-                        </span>
+                          <FiEdit2 />
+                          Edit
+                        </button>
+
+                        <button
+                          type="button"
+                          className="delete-btn"
+                          onClick={() =>
+                            deleteInternship(
+                              internship._id
+                            )
+                          }
+                        >
+                          <FiTrash2 />
+                          Delete
+                        </button>
+
                       </div>
 
-                      <div className="managed-info">
-                        <span>
-                          Location:{" "}
-                          {internship.location}
-                        </span>
-
-                        <span>
-                          Stipend:{" "}
-                          {internship.stipend}
-                        </span>
-
-                        <span>
-                          Duration:{" "}
-                          {internship.duration}
-                        </span>
-
-                        <span>
-                          Openings:{" "}
-                          {internship.openings}
-                        </span>
-                      </div>
                     </div>
-
-                    <div className="managed-actions">
-                      <button
-                        type="button"
-                        className="edit-btn"
-                        onClick={() =>
-                          openInternshipEdit(
-                            internship
-                          )
-                        }
-                      >
-                        <FiEdit2 />
-                        Edit
-                      </button>
-
-                      <button
-                        type="button"
-                        className="delete-btn"
-                        onClick={() =>
-                          deleteInternship(
-                            internship._id
-                          )
-                        }
-                      >
-                        <FiTrash2 />
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                ))
+                  )
+                )
               )}
+
             </div>
           )}
 
           {/* COURSES */}
 
-          {activeTab === "courses" && (
+          {activeTab ===
+            "courses" && (
             <div className="managed-list">
-              {courses.length === 0 ? (
+
+              {courses.length ===
+              0 ? (
                 <div className="empty-content">
+
                   <FiAward />
 
-                  <h3>No Courses Found</h3>
+                  <h3>
+                    No Courses Found
+                  </h3>
 
                   <p>
                     Add a course from the
                     dashboard above.
                   </p>
+
                 </div>
               ) : (
-                courses.map((course) => (
-                  <div
-                    className="managed-card"
-                    key={course._id}
-                  >
-                    <div className="managed-card-icon">
-                      <FiAward />
-                    </div>
+                courses.map(
+                  (course) => (
+                    <div
+                      className="managed-card"
+                      key={
+                        course._id
+                      }
+                    >
 
-                    <div className="managed-card-content">
-                      <div className="managed-card-top">
-                        <div>
-                          <h3>{course.name}</h3>
+                      <div className="managed-card-icon">
+                        <FiAward />
+                      </div>
 
-                          <p className="managed-company">
-                            {course.location}
-                          </p>
+                      <div className="managed-card-content">
+
+                        <div className="managed-card-top">
+
+                          <div>
+
+                            <h3>
+                              {course.name}
+                            </h3>
+
+                            <p className="managed-company">
+                              {
+                                course.location
+                              }
+                            </p>
+
+                          </div>
+
+                          <span
+                            className={`status-badge ${
+                              course.status?.toLowerCase() ||
+                              "published"
+                            }`}
+                          >
+                            {
+                              course.status
+                            }
+                          </span>
+
                         </div>
 
-                        <span
-                          className={`status-badge ${
-                            course.status?.toLowerCase() ||
-                            "published"
-                          }`}
+                        <div className="managed-info">
+
+                          <span>
+                            Duration:{" "}
+                            {
+                              course.duration
+                            }
+                          </span>
+
+                          <span>
+                            Location:{" "}
+                            {
+                              course.location
+                            }
+                          </span>
+
+                        </div>
+
+                      </div>
+
+                      <div className="managed-actions">
+
+                        <button
+                          type="button"
+                          className="edit-btn"
+                          onClick={() =>
+                            openCourseEdit(
+                              course
+                            )
+                          }
                         >
-                          {course.status}
-                        </span>
+                          <FiEdit2 />
+                          Edit
+                        </button>
+
+                        <button
+                          type="button"
+                          className="delete-btn"
+                          onClick={() =>
+                            deleteCourse(
+                              course._id
+                            )
+                          }
+                        >
+                          <FiTrash2 />
+                          Delete
+                        </button>
+
                       </div>
 
-                      <div className="managed-info">
-                        <span>
-                          Duration:{" "}
-                          {course.duration}
-                        </span>
-
-                        <span>
-                          Location:{" "}
-                          {course.location}
-                        </span>
-                      </div>
                     </div>
-
-                    <div className="managed-actions">
-                      <button
-                        type="button"
-                        className="edit-btn"
-                        onClick={() =>
-                          openCourseEdit(course)
-                        }
-                      >
-                        <FiEdit2 />
-                        Edit
-                      </button>
-
-                      <button
-                        type="button"
-                        className="delete-btn"
-                        onClick={() =>
-                          deleteCourse(course._id)
-                        }
-                      >
-                        <FiTrash2 />
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                ))
+                  )
+                )
               )}
+
             </div>
           )}
+
         </>
       )}
 
@@ -969,12 +1365,17 @@ function AdminContentManager({ onUnauthorized }) {
 
       {editingItem && (
         <div className="edit-modal-overlay">
+
           <div className="edit-modal">
+
             <div className="edit-modal-header">
+
               <div>
+
                 <h2>
                   Edit{" "}
-                  {editingType === "job"
+                  {editingType ===
+                  "job"
                     ? "Job"
                     : editingType ===
                       "internship"
@@ -985,56 +1386,79 @@ function AdminContentManager({ onUnauthorized }) {
                 <p>
                   Update the existing information.
                 </p>
+
               </div>
 
               <button
                 type="button"
                 className="close-modal-btn"
-                onClick={closeEditModal}
+                onClick={
+                  closeEditModal
+                }
                 disabled={saving}
               >
                 <FiX />
               </button>
+
             </div>
 
             <form
               className="edit-form"
               onSubmit={handleSave}
             >
+
               {/* JOB FORM */}
 
-              {editingType === "job" && (
+              {editingType ===
+                "job" && (
                 <>
+
                   <div className="form-grid">
+
                     <div className="edit-form-group">
-                      <label>Role *</label>
+
+                      <label>
+                        Role *
+                      </label>
 
                       <input
                         type="text"
                         name="role"
                         value={
-                          formData.role || ""
+                          formData.role ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Company *</label>
+
+                      <label>
+                        Company *
+                      </label>
 
                       <input
                         type="text"
                         name="company"
                         value={
-                          formData.company || ""
+                          formData.company ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group full-width">
+
                       <label>
                         Skills *{" "}
                         <span>
@@ -1046,73 +1470,108 @@ function AdminContentManager({ onUnauthorized }) {
                       <textarea
                         name="skills"
                         value={
-                          formData.skills || ""
+                          formData.skills ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         rows="3"
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Salary *</label>
+
+                      <label>
+                        Salary *
+                      </label>
 
                       <input
                         type="text"
                         name="salary"
                         value={
-                          formData.salary || ""
+                          formData.salary ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Education *</label>
+
+                      <label>
+                        Education *
+                      </label>
 
                       <input
                         type="text"
                         name="education"
                         value={
-                          formData.education || ""
+                          formData.education ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Location *</label>
+
+                      <label>
+                        Location *
+                      </label>
 
                       <input
                         type="text"
                         name="location"
                         value={
-                          formData.location || ""
+                          formData.location ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Openings *</label>
+
+                      <label>
+                        Openings *
+                      </label>
 
                       <input
                         type="number"
                         name="openings"
                         min="1"
                         value={
-                          formData.openings || 1
+                          formData.openings ||
+                          1
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Experience</label>
+
+                      <label>
+                        Experience
+                      </label>
 
                       <input
                         type="text"
@@ -1121,12 +1580,18 @@ function AdminContentManager({ onUnauthorized }) {
                           formData.experience ||
                           ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Expiry Date *</label>
+
+                      <label>
+                        Expiry Date *
+                      </label>
 
                       <input
                         type="date"
@@ -1135,13 +1600,19 @@ function AdminContentManager({ onUnauthorized }) {
                           formData.expiryDate ||
                           ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Status</label>
+
+                      <label>
+                        Status
+                      </label>
 
                       <select
                         name="status"
@@ -1149,8 +1620,11 @@ function AdminContentManager({ onUnauthorized }) {
                           formData.status ||
                           "Published"
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                       >
+
                         <option value="Published">
                           Published
                         </option>
@@ -1162,10 +1636,13 @@ function AdminContentManager({ onUnauthorized }) {
                         <option value="Expired">
                           Expired
                         </option>
+
                       </select>
+
                     </div>
 
                     <div className="edit-form-group full-width">
+
                       <label>
                         Responsibilities
                       </label>
@@ -1176,14 +1653,20 @@ function AdminContentManager({ onUnauthorized }) {
                           formData.responsibilities ||
                           ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         rows="4"
                         placeholder="One responsibility per line"
                       />
+
                     </div>
 
                     <div className="edit-form-group full-width">
-                      <label>About Role</label>
+
+                      <label>
+                        About Role
+                      </label>
 
                       <textarea
                         name="aboutRole"
@@ -1191,48 +1674,71 @@ function AdminContentManager({ onUnauthorized }) {
                           formData.aboutRole ||
                           ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         rows="5"
                       />
+
                     </div>
+
                   </div>
+
                 </>
               )}
 
               {/* INTERNSHIP FORM */}
 
-              {editingType === "internship" && (
+              {editingType ===
+                "internship" && (
                 <>
+
                   <div className="form-grid">
+
                     <div className="edit-form-group">
-                      <label>Role *</label>
+
+                      <label>
+                        Role *
+                      </label>
 
                       <input
                         type="text"
                         name="role"
                         value={
-                          formData.role || ""
+                          formData.role ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Company *</label>
+
+                      <label>
+                        Company *
+                      </label>
 
                       <input
                         type="text"
                         name="company"
                         value={
-                          formData.company || ""
+                          formData.company ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group full-width">
+
                       <label>
                         Skills *{" "}
                         <span>
@@ -1244,87 +1750,129 @@ function AdminContentManager({ onUnauthorized }) {
                       <textarea
                         name="skills"
                         value={
-                          formData.skills || ""
+                          formData.skills ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         rows="3"
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Stipend *</label>
+
+                      <label>
+                        Stipend *
+                      </label>
 
                       <input
                         type="text"
                         name="stipend"
                         value={
-                          formData.stipend || ""
+                          formData.stipend ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Duration *</label>
+
+                      <label>
+                        Duration *
+                      </label>
 
                       <input
                         type="text"
                         name="duration"
                         value={
-                          formData.duration || ""
+                          formData.duration ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Education *</label>
+
+                      <label>
+                        Education *
+                      </label>
 
                       <input
                         type="text"
                         name="education"
                         value={
-                          formData.education || ""
+                          formData.education ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Location *</label>
+
+                      <label>
+                        Location *
+                      </label>
 
                       <input
                         type="text"
                         name="location"
                         value={
-                          formData.location || ""
+                          formData.location ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Openings *</label>
+
+                      <label>
+                        Openings *
+                      </label>
 
                       <input
                         type="number"
                         name="openings"
                         min="1"
                         value={
-                          formData.openings || 1
+                          formData.openings ||
+                          1
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Experience</label>
+
+                      <label>
+                        Experience
+                      </label>
 
                       <input
                         type="text"
@@ -1333,12 +1881,18 @@ function AdminContentManager({ onUnauthorized }) {
                           formData.experience ||
                           ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Expiry Date *</label>
+
+                      <label>
+                        Expiry Date *
+                      </label>
 
                       <input
                         type="date"
@@ -1347,13 +1901,19 @@ function AdminContentManager({ onUnauthorized }) {
                           formData.expiryDate ||
                           ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Status</label>
+
+                      <label>
+                        Status
+                      </label>
 
                       <select
                         name="status"
@@ -1361,8 +1921,11 @@ function AdminContentManager({ onUnauthorized }) {
                           formData.status ||
                           "Published"
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                       >
+
                         <option value="Published">
                           Published
                         </option>
@@ -1374,10 +1937,13 @@ function AdminContentManager({ onUnauthorized }) {
                         <option value="Expired">
                           Expired
                         </option>
+
                       </select>
+
                     </div>
 
                     <div className="edit-form-group full-width">
+
                       <label>
                         Responsibilities
                       </label>
@@ -1388,14 +1954,20 @@ function AdminContentManager({ onUnauthorized }) {
                           formData.responsibilities ||
                           ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         rows="4"
                         placeholder="One responsibility per line"
                       />
+
                     </div>
 
                     <div className="edit-form-group full-width">
-                      <label>About Role</label>
+
+                      <label>
+                        About Role
+                      </label>
 
                       <textarea
                         name="aboutRole"
@@ -1403,63 +1975,95 @@ function AdminContentManager({ onUnauthorized }) {
                           formData.aboutRole ||
                           ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         rows="5"
                       />
+
                     </div>
+
                   </div>
+
                 </>
               )}
 
               {/* COURSE FORM */}
 
-              {editingType === "course" && (
+              {editingType ===
+                "course" && (
                 <>
+
                   <div className="form-grid">
+
                     <div className="edit-form-group">
-                      <label>Course Name *</label>
+
+                      <label>
+                        Course Name *
+                      </label>
 
                       <input
                         type="text"
                         name="name"
                         value={
-                          formData.name || ""
+                          formData.name ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Time Period *</label>
+
+                      <label>
+                        Time Period *
+                      </label>
 
                       <input
                         type="text"
                         name="duration"
                         value={
-                          formData.duration || ""
+                          formData.duration ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Location *</label>
+
+                      <label>
+                        Location *
+                      </label>
 
                       <input
                         type="text"
                         name="location"
                         value={
-                          formData.location || ""
+                          formData.location ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group">
-                      <label>Status</label>
+
+                      <label>
+                        Status
+                      </label>
 
                       <select
                         name="status"
@@ -1467,8 +2071,11 @@ function AdminContentManager({ onUnauthorized }) {
                           formData.status ||
                           "Published"
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                       >
+
                         <option value="Published">
                           Published
                         </option>
@@ -1476,10 +2083,13 @@ function AdminContentManager({ onUnauthorized }) {
                         <option value="Draft">
                           Draft
                         </option>
+
                       </select>
+
                     </div>
 
                     <div className="edit-form-group full-width">
+
                       <label>
                         Description *
                       </label>
@@ -1490,13 +2100,17 @@ function AdminContentManager({ onUnauthorized }) {
                           formData.description ||
                           ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         rows="5"
                         required
                       />
+
                     </div>
 
                     <div className="edit-form-group full-width">
+
                       <label>
                         Skills
                         <span>
@@ -1508,14 +2122,19 @@ function AdminContentManager({ onUnauthorized }) {
                       <textarea
                         name="skills"
                         value={
-                          formData.skills || ""
+                          formData.skills ||
+                          ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         rows="4"
                       />
+
                     </div>
 
                     <div className="edit-form-group full-width">
+
                       <label>
                         Highlights
                         <span>
@@ -1529,21 +2148,29 @@ function AdminContentManager({ onUnauthorized }) {
                           formData.highlights ||
                           ""
                         }
-                        onChange={handleChange}
+                        onChange={
+                          handleChange
+                        }
                         rows="5"
                       />
+
                     </div>
+
                   </div>
+
                 </>
               )}
 
               {/* FORM BUTTONS */}
 
               <div className="edit-form-actions">
+
                 <button
                   type="button"
                   className="cancel-edit-btn"
-                  onClick={closeEditModal}
+                  onClick={
+                    closeEditModal
+                  }
                   disabled={saving}
                 >
                   Cancel
@@ -1566,11 +2193,16 @@ function AdminContentManager({ onUnauthorized }) {
                     </>
                   )}
                 </button>
+
               </div>
+
             </form>
+
           </div>
+
         </div>
       )}
+
     </section>
   );
 }

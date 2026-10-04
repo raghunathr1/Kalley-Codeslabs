@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import {
   FiRefreshCw,
   FiMail,
@@ -9,15 +8,17 @@ import {
   FiMessageSquare,
 } from "react-icons/fi";
 
-import "./AdminConsultationManager.css";
+import api from "../api/api";
 
-const API_BASE_URL = "http://localhost:5000/api";
+import "./AdminConsultationManager.css";
 
 function AdminConsultationManager({
   onUnauthorized,
 }) {
-  const [consultations, setConsultations] =
-    useState([]);
+  const [
+    consultations,
+    setConsultations,
+  ] = useState([]);
 
   const [loading, setLoading] =
     useState(true);
@@ -29,48 +30,56 @@ function AdminConsultationManager({
     useState(null);
 
   const adminToken =
-    localStorage.getItem("adminToken");
+    localStorage.getItem(
+      "adminToken"
+    );
 
   // =========================
   // FETCH CONSULTATIONS
   // =========================
 
-  const fetchConsultations = async () => {
-    try {
-      setLoading(true);
-      setError("");
+  const fetchConsultations =
+    async () => {
+      try {
+        setLoading(true);
+        setError("");
 
-      const response = await axios.get(
-        `${API_BASE_URL}/consultations`,
-        {
-          headers: {
-            Authorization: `Bearer ${adminToken}`,
-          },
+        const response =
+          await api.get(
+            "/consultations",
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${adminToken}`,
+              },
+            }
+          );
+
+        setConsultations(
+          response.data || []
+        );
+      } catch (error) {
+        console.error(
+          "Fetch consultations error:",
+          error
+        );
+
+        if (
+          error.response?.status ===
+          401
+        ) {
+          onUnauthorized();
+          return;
         }
-      );
 
-      setConsultations(
-        response.data || []
-      );
-    } catch (error) {
-      console.error(
-        "Fetch consultations error:",
-        error
-      );
-
-      if (error.response?.status === 401) {
-        onUnauthorized();
-        return;
+        setError(
+          error.response?.data?.message ||
+            "Failed to fetch consultations"
+        );
+      } finally {
+        setLoading(false);
       }
-
-      setError(
-        error.response?.data?.message ||
-          "Failed to fetch consultations"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
   useEffect(() => {
     fetchConsultations();
@@ -85,27 +94,34 @@ function AdminConsultationManager({
     status
   ) => {
     try {
-      setUpdatingId(consultationId);
-
-      const response = await axios.patch(
-        `${API_BASE_URL}/consultations/${consultationId}/status`,
-        {
-          status,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${adminToken}`,
-          },
-        }
+      setUpdatingId(
+        consultationId
       );
 
+      const response =
+        await api.patch(
+          `/consultations/${consultationId}/status`,
+          {
+            status,
+          },
+          {
+            headers: {
+              Authorization:
+                `Bearer ${adminToken}`,
+            },
+          }
+        );
+
       setConsultations(
-        (previousConsultations) =>
+        (
+          previousConsultations
+        ) =>
           previousConsultations.map(
             (consultation) =>
               consultation._id ===
               consultationId
-                ? response.data.consultation
+                ? response.data
+                    .consultation
                 : consultation
           )
       );
@@ -115,7 +131,10 @@ function AdminConsultationManager({
         error
       );
 
-      if (error.response?.status === 401) {
+      if (
+        error.response?.status ===
+        401
+      ) {
         onUnauthorized();
         return;
       }
@@ -138,7 +157,9 @@ function AdminConsultationManager({
       return "-";
     }
 
-    return new Date(date).toLocaleString(
+    return new Date(
+      date
+    ).toLocaleString(
       "en-IN",
       {
         day: "2-digit",
@@ -157,13 +178,17 @@ function AdminConsultationManager({
   if (loading) {
     return (
       <section className="admin-consultation-manager">
+
         <div className="consultation-loading">
+
           <div className="consultation-spinner"></div>
 
           <p>
             Loading consultations...
           </p>
+
         </div>
+
       </section>
     );
   }
@@ -176,6 +201,7 @@ function AdminConsultationManager({
       <div className="consultation-manager-header">
 
         <div>
+
           <h2>
             Consultation Requests
           </h2>
@@ -184,12 +210,15 @@ function AdminConsultationManager({
             Manage project enquiries submitted
             from the website.
           </p>
+
         </div>
 
         <button
           type="button"
           className="consultation-refresh-btn"
-          onClick={fetchConsultations}
+          onClick={
+            fetchConsultations
+          }
           disabled={loading}
         >
           <FiRefreshCw
@@ -209,21 +238,28 @@ function AdminConsultationManager({
 
       {error && (
         <div className="consultation-manager-error">
-          <p>{error}</p>
+
+          <p>
+            {error}
+          </p>
 
           <button
             type="button"
-            onClick={fetchConsultations}
+            onClick={
+              fetchConsultations
+            }
           >
             Try Again
           </button>
+
         </div>
       )}
 
       {/* ================= EMPTY ================= */}
 
       {!error &&
-        consultations.length === 0 && (
+        consultations.length ===
+          0 && (
           <div className="consultation-empty">
 
             <FiMessageSquare />
@@ -244,14 +280,19 @@ function AdminConsultationManager({
       {/* ================= LIST ================= */}
 
       {!error &&
-        consultations.length > 0 && (
+        consultations.length >
+          0 && (
           <div className="consultation-list">
 
             {consultations.map(
-              (consultation) => (
+              (
+                consultation
+              ) => (
                 <article
                   className="consultation-admin-card"
-                  key={consultation._id}
+                  key={
+                    consultation._id
+                  }
                 >
 
                   {/* TOP */}
@@ -265,8 +306,11 @@ function AdminConsultationManager({
                       </div>
 
                       <div>
+
                         <h3>
-                          {consultation.name}
+                          {
+                            consultation.name
+                          }
                         </h3>
 
                         <p>
@@ -274,6 +318,7 @@ function AdminConsultationManager({
                             consultation.createdAt
                           )}
                         </p>
+
                       </div>
 
                     </div>
@@ -328,12 +373,19 @@ function AdminConsultationManager({
                       <FiMail />
 
                       <div>
-                        <span>Email</span>
+
+                        <span>
+                          Email
+                        </span>
 
                         <strong>
-                          {consultation.email}
+                          {
+                            consultation.email
+                          }
                         </strong>
+
                       </div>
+
                     </a>
 
                     <a
@@ -343,6 +395,7 @@ function AdminConsultationManager({
                       <FiPhone />
 
                       <div>
+
                         <span>
                           Contact Number
                         </span>
@@ -352,13 +405,17 @@ function AdminConsultationManager({
                             consultation.contactNumber
                           }
                         </strong>
+
                       </div>
+
                     </a>
 
                     <div className="consultation-contact-item">
+
                       <FiBriefcase />
 
                       <div>
+
                         <span>
                           Company
                         </span>
@@ -368,7 +425,9 @@ function AdminConsultationManager({
                             consultation.companyName
                           }
                         </strong>
+
                       </div>
+
                     </div>
 
                   </div>
@@ -378,11 +437,13 @@ function AdminConsultationManager({
                   <div className="consultation-requirement">
 
                     <div className="requirement-heading">
+
                       <FiMessageSquare />
 
                       <span>
                         Requirement
                       </span>
+
                     </div>
 
                     <p>

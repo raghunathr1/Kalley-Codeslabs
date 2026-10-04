@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import {
   FiRefreshCw,
   FiMail,
@@ -9,10 +8,9 @@ import {
   FiMessageSquare,
 } from "react-icons/fi";
 
-import "./AdminCourseEnquiryManager.css";
+import api from "../api/api";
 
-const API_BASE_URL =
-  "http://localhost:5000/api";
+import "./AdminCourseEnquiryManager.css";
 
 function AdminCourseEnquiryManager({
   onUnauthorized,
@@ -30,7 +28,9 @@ function AdminCourseEnquiryManager({
     useState(null);
 
   const adminToken =
-    localStorage.getItem("adminToken");
+    localStorage.getItem(
+      "adminToken"
+    );
 
   // =========================
   // FETCH ENQUIRIES
@@ -41,14 +41,16 @@ function AdminCourseEnquiryManager({
       setLoading(true);
       setError("");
 
-      const response = await axios.get(
-        `${API_BASE_URL}/course-enquiries`,
-        {
-          headers: {
-            Authorization: `Bearer ${adminToken}`,
-          },
-        }
-      );
+      const response =
+        await api.get(
+          "/course-enquiries",
+          {
+            headers: {
+              Authorization:
+                `Bearer ${adminToken}`,
+            },
+          }
+        );
 
       setEnquiries(
         response.data || []
@@ -60,7 +62,8 @@ function AdminCourseEnquiryManager({
       );
 
       if (
-        error.response?.status === 401
+        error.response?.status ===
+        401
       ) {
         onUnauthorized();
         return;
@@ -91,14 +94,15 @@ function AdminCourseEnquiryManager({
       setUpdatingId(enquiryId);
 
       const response =
-        await axios.patch(
-          `${API_BASE_URL}/course-enquiries/${enquiryId}/status`,
+        await api.patch(
+          `/course-enquiries/${enquiryId}/status`,
           {
             status,
           },
           {
             headers: {
-              Authorization: `Bearer ${adminToken}`,
+              Authorization:
+                `Bearer ${adminToken}`,
             },
           }
         );
@@ -107,7 +111,8 @@ function AdminCourseEnquiryManager({
         (previousEnquiries) =>
           previousEnquiries.map(
             (enquiry) =>
-              enquiry._id === enquiryId
+              enquiry._id ===
+              enquiryId
                 ? response.data.enquiry
                 : enquiry
           )
@@ -119,7 +124,8 @@ function AdminCourseEnquiryManager({
       );
 
       if (
-        error.response?.status === 401
+        error.response?.status ===
+        401
       ) {
         onUnauthorized();
         return;
@@ -161,6 +167,7 @@ function AdminCourseEnquiryManager({
   if (loading) {
     return (
       <section className="admin-course-enquiry-manager">
+
         <div className="course-enquiry-loading">
 
           <div className="course-enquiry-spinner"></div>
@@ -170,6 +177,7 @@ function AdminCourseEnquiryManager({
           </p>
 
         </div>
+
       </section>
     );
   }
@@ -208,7 +216,10 @@ function AdminCourseEnquiryManager({
 
       {error && (
         <div className="course-enquiry-error">
-          <p>{error}</p>
+
+          <p>
+            {error}
+          </p>
 
           <button
             type="button"
@@ -216,13 +227,15 @@ function AdminCourseEnquiryManager({
           >
             Try Again
           </button>
+
         </div>
       )}
 
       {/* EMPTY */}
 
       {!error &&
-        enquiries.length === 0 && (
+        enquiries.length ===
+          0 && (
           <div className="course-enquiry-empty">
 
             <FiBookOpen />
@@ -249,7 +262,9 @@ function AdminCourseEnquiryManager({
               (enquiry) => (
                 <article
                   className="course-enquiry-card"
-                  key={enquiry._id}
+                  key={
+                    enquiry._id
+                  }
                 >
 
                   {/* TOP */}
@@ -263,6 +278,7 @@ function AdminCourseEnquiryManager({
                       </div>
 
                       <div>
+
                         <h3>
                           {enquiry.name}
                         </h3>
@@ -272,6 +288,7 @@ function AdminCourseEnquiryManager({
                             enquiry.createdAt
                           )}
                         </p>
+
                       </div>
 
                     </div>
@@ -322,6 +339,7 @@ function AdminCourseEnquiryManager({
                     <FiBookOpen />
 
                     <div>
+
                       <span>
                         Course
                       </span>
@@ -329,6 +347,7 @@ function AdminCourseEnquiryManager({
                       <strong>
                         {enquiry.course}
                       </strong>
+
                     </div>
 
                   </div>
@@ -341,9 +360,11 @@ function AdminCourseEnquiryManager({
                       href={`mailto:${enquiry.email}`}
                       className="course-enquiry-contact-item"
                     >
+
                       <FiMail />
 
                       <div>
+
                         <span>
                           Email
                         </span>
@@ -351,16 +372,20 @@ function AdminCourseEnquiryManager({
                         <strong>
                           {enquiry.email}
                         </strong>
+
                       </div>
+
                     </a>
 
                     <a
                       href={`tel:${enquiry.mobile}`}
                       className="course-enquiry-contact-item"
                     >
+
                       <FiPhone />
 
                       <div>
+
                         <span>
                           Mobile
                         </span>
@@ -368,7 +393,9 @@ function AdminCourseEnquiryManager({
                         <strong>
                           {enquiry.mobile}
                         </strong>
+
                       </div>
+
                     </a>
 
                   </div>
@@ -379,11 +406,13 @@ function AdminCourseEnquiryManager({
                     <div className="course-enquiry-query">
 
                       <div className="course-enquiry-query-heading">
+
                         <FiMessageSquare />
 
                         <span>
                           Query
                         </span>
+
                       </div>
 
                       <p>

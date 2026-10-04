@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import {
   FiLock,
   FiMail,
@@ -12,6 +11,8 @@ import {
   FiPlus,
   FiTrash2,
 } from "react-icons/fi";
+
+import api from "../api/api";
 
 import AdminContentManager from "../components/AdminContentManager";
 import AdminConsultationManager from "../components/AdminConsultationManager";
@@ -148,8 +149,8 @@ function AdminDashboard() {
     try {
       setLoading(true);
 
-      const response = await axios.post(
-        "http://localhost:5000/api/admin/login",
+      const response = await api.post(
+        "/admin/login",
         {
           email:
             email
@@ -409,8 +410,8 @@ function AdminDashboard() {
       }
 
       const response =
-        await axios.post(
-          "http://localhost:5000/api/jobs",
+        await api.post(
+          "/jobs",
           {
             role:
               jobForm.role.trim(),
@@ -700,8 +701,8 @@ function AdminDashboard() {
         }
 
         const response =
-          await axios.post(
-            "http://localhost:5000/api/internships",
+          await api.post(
+            "/internships",
             {
               role:
                 internshipForm.role.trim(),
@@ -965,8 +966,8 @@ function AdminDashboard() {
         }
 
         const response =
-          await axios.post(
-            "http://localhost:5000/api/courses",
+          await api.post(
+            "/courses",
             {
               name:
                 courseForm.name.trim(),
